@@ -61,7 +61,7 @@ app.post("/kayit", (req,res) => {
   let filt = eval("["+("abcçdefghıijklmnoöprsştuüvyz1234567890").split("").map(i=> "'"+i+"'").join(",")+"]");
   if(req.body.password.length < 8 || req.body.password.split("").filter(i=> !isNaN(i)).length < 2 || req.body.password.split("").filter(i=> !filt.some(a=> a === i.toLowerCase())).length < 1) hata.push("Şifreniz en az 8 haneden, 2 sayıdan ve 1 sembol içermelidir.");
   if(hata.length > 0) return res.render("kayit", {db,req,res,hata});
-  db.push({id:db.get("users").map(i=> i.id).sort().reverse()[0],username:req.body.username,password:req.body.password,acilma:Date.now()});
+  db.push("users",{id:(db.get("users").length === 0 ? 1 : db.get("users").map(i=> i.id).sort().reverse()[0]),username:req.body.username,password:req.body.password,acilma:Date.now()});
   res.redirect("/");
 })
 app.get("/cikis", (req,res) => {
